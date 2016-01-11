@@ -14,18 +14,6 @@ TRELLO_LIST_TO_READ = 'To Read'
 TRELLO_LIST_READING = 'Reading'
 TRELLO_LIST_FINISHED = 'Finished'
 
-params = {
-    'order': '-updatedAt',
-    'limit': 1
-}
-
-lastUploadedBook = parse.getBookWithParams(params)['results']
-lastUploadedDate = None
-
-if lastUploadedBook:
-    lastUploadedBook = lastUploadedBook[0]
-    lastUploadedDate = dateutil.parser.parse(lastUploadedBook['updatedAt'])
-
 def getCardsInFinishedList():
     boardId = trello.findBoardInMembersBoardsByName(TRELLO_USERNAME, TRELLO_BOARD_NAME)
     listId = trello.findListInBoardByName(boardId, TRELLO_LIST_FINISHED)
@@ -74,38 +62,42 @@ def createBook(card):
                     'iso': isoDateFinished
                 }
 
-
         if dateStarted and dateFinished:
-            if not lastUploadedDate or (dateFinished > lastUploadedDate):
-                book['daysToFinish'] = (dateFinished - dateStarted).days
+            book['daysToFinish'] = (dateFinished - dateStarted).days
 
-                if card['labels']:
-                    labels = card['labels']
-                    categories = []
-                    for label in labels:
-                        categories.append(label['name'])
+            if card['labels']:
+                labels = card['labels']
+                categories = []
+                for label in labels:
+                    categories.append(label['name'])
 
-                    book['categories'] = categories
+                book['categories'] = categories
 
-                return book
+            return book
         else:
             return None
     else:
         return None
 
 def main():
+    print 'Get books in Parse...'
+    booksInParse = parse.getBooks()['results']
+    existingCardIds = [book['cardId'] for book in booksInParse]
+    print 'Done.'
+
     print 'Get cards from Trello...'
     cards = getCardsInFinishedList()
     print 'Done.'
 
     for card in cards:
-        book = createBook(card)
-        if book:
-            print 'Uploading to Parse...'
-            r = parse.postBook(book)
+        if card['id'] not in existingCardIds:
+            book = createBook(card)
+            if book:
+                print 'Uploading to Parse...'
+                r = parse.postBook(book)
 
-            pprint(book)
-            print r
+                pprint(book)
+                print r
 
     now = datetime.datetime.now(dateutil.tz.tzutc())
     cron = {

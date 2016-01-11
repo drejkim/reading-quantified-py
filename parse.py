@@ -14,14 +14,17 @@ def postBook(book):
 
     return r
 
-def getBookWithParams(params):
+def getBooks(params=None):
     headers = {
         'X-Parse-Application-Id': PARSE_APP_ID,
         'X-Parse-REST-API-Key': PARSE_API_KEY,
         'Content-Type': 'application/json'
     }
 
-    r = requests.get('https://api.parse.com/1/classes/Book', headers=headers, params=params)
+    if params:
+        r = requests.get('https://api.parse.com/1/classes/Book', headers=headers, params=params)
+    else:
+        r = requests.get('https://api.parse.com/1/classes/Book', headers=headers)
 
     return r.json()
 

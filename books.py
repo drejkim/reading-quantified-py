@@ -63,7 +63,7 @@ def createBook(card):
                 }
 
         if dateStarted and dateFinished:
-            book['daysToFinish'] = (dateFinished - dateStarted).days
+            book['daysToFinish'] = (dateFinished.date() - dateStarted.date()).days
 
             if card['labels']:
                 labels = card['labels']

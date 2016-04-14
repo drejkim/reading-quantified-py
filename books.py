@@ -80,6 +80,9 @@ def createBook(card):
         return None
 
 def main():
+    # Log into Parse
+    userData = parse.login()
+
     print 'Get books in Parse...'
     booksInParse = parse.getBooks()['results']
     existingCardIds = [book['cardId'] for book in booksInParse]
@@ -94,7 +97,7 @@ def main():
             book = createBook(card)
             if book:
                 print 'Uploading to Parse...'
-                r = parse.postBook(book)
+                r = parse.postBook(book, userData['sessionToken'])
 
                 pprint(book)
                 print r
@@ -106,7 +109,7 @@ def main():
             'iso': now.isoformat()
         }
     }
-    r = parse.postCron(cron)
+    r = parse.postCron(cron, userData['sessionToken'])
     pprint(cron)
     print r
 

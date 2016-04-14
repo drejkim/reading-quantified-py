@@ -5,10 +5,26 @@ import requests
 
 serverUrl = 'https://drejkim-reading-quantified.herokuapp.com/parse/'
 
-def postBook(book):
+def login():
     headers = {
         'X-Parse-Application-Id': PARSE_APP_ID,
         'X-Parse-REST-API-Key': PARSE_API_KEY,
+    }
+
+    params = {
+        'username': PARSE_USERNAME,
+        'password': PARSE_PASSWORD
+    }
+
+    r = requests.get(serverUrl + 'login', headers=headers, params=params)
+
+    return r.json()
+
+def postBook(book, sessionToken):
+    headers = {
+        'X-Parse-Application-Id': PARSE_APP_ID,
+        'X-Parse-REST-API-Key': PARSE_API_KEY,
+        'X-Parse-Session-Token': sessionToken,
         'Content-Type': 'application/json'
     }
 
@@ -30,10 +46,11 @@ def getBooks(params=None):
 
     return r.json()
 
-def postCron(cron):
+def postCron(cron, sessionToken):
     headers = {
         'X-Parse-Application-Id': PARSE_APP_ID,
         'X-Parse-REST-API-Key': PARSE_API_KEY,
+        'X-Parse-Session-Token': sessionToken,
         'Content-Type': 'application/json'
     }
 

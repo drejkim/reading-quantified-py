@@ -9,6 +9,8 @@ Create `config.py` with the following variables:
 * TRELLO_API_KEY
 * PARSE_APP_ID
 * PARSE_API_KEY
+* PARSE_USERNAME
+* PARSE_PASSWORD
 
 Install the required packages:
 

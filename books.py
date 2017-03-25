@@ -48,22 +48,22 @@ def createBook(card):
         for action in actions:
             isoDateStarted = getIsoDateForListChangeActions(action, TRELLO_LIST_TO_READ, TRELLO_LIST_READING)
             if isoDateStarted:
-                dateStarted = dateutil.parser.parse(isoDateStarted)
+                dateStarted = dateutil.parser.parse(isoDateStarted).date()
                 book['dateStarted'] = {
                     '__type': 'Date',
-                    'iso': isoDateStarted
+                    'iso': dateStarted.isoformat()
                 }
 
             isoDateFinished = getIsoDateForListChangeActions(action, TRELLO_LIST_READING, TRELLO_LIST_FINISHED)
             if isoDateFinished:
-                dateFinished = dateutil.parser.parse(isoDateFinished)
+                dateFinished = dateutil.parser.parse(isoDateFinished).date()
                 book['dateFinished'] = {
                     '__type': 'Date',
-                    'iso': isoDateFinished
+                    'iso': dateFinished.isoformat()
                 }
 
         if dateStarted and dateFinished:
-            book['daysToFinish'] = (dateFinished.date() - dateStarted.date()).days
+            book['daysToFinish'] = (dateFinished - dateStarted).days + 1
 
             if card['labels']:
                 labels = card['labels']

@@ -17,7 +17,7 @@ TRELLO_LIST_FINISHED = 'Finished'
 def getCardsInFinishedList():
     boardId = trello.findBoardInMembersBoardsByName(TRELLO_USERNAME, TRELLO_BOARD_NAME)
     listId = trello.findListInBoardByName(boardId, TRELLO_LIST_FINISHED)
-    cards = trello.getCardsInList(listId, actionArgs='updateCard')
+    cards = trello.getCardsInList(listId)
 
     return cards
 
@@ -46,13 +46,22 @@ def createBook(card):
         actions = card['actions']
 
         for action in actions:
-            isoDateStarted = getIsoDateForListChangeActions(action, TRELLO_LIST_TO_READ, TRELLO_LIST_READING)
-            if isoDateStarted:
-                dateStarted = dateutil.parser.parse(isoDateStarted).date()
+            # Check if a card was created in the Reading list
+            if action['type'] == 'createCard' and action['data']['list']['name'] == TRELLO_LIST_READING:
+                dateStarted = dateutil.parser.parse(action['date']).date()
                 book['dateStarted'] = {
                     '__type': 'Date',
                     'iso': dateStarted.isoformat()
                 }
+            # Otherwise, check if the card was moved from To Read to Reading
+            else:
+                isoDateStarted = getIsoDateForListChangeActions(action, TRELLO_LIST_TO_READ, TRELLO_LIST_READING)
+                if isoDateStarted:
+                    dateStarted = dateutil.parser.parse(isoDateStarted).date()
+                    book['dateStarted'] = {
+                        '__type': 'Date',
+                        'iso': dateStarted.isoformat()
+                    }
 
             isoDateFinished = getIsoDateForListChangeActions(action, TRELLO_LIST_READING, TRELLO_LIST_FINISHED)
             if isoDateFinished:

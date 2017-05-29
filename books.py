@@ -75,12 +75,7 @@ def createBook(card):
             book['daysToFinish'] = (dateFinished - dateStarted).days + 1
 
             if card['labels']:
-                labels = card['labels']
-                categories = []
-                for label in labels:
-                    categories.append(label['name'])
-
-                book['categories'] = categories
+                book['labels'] = card['labels']
 
             return book
         else:

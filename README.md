@@ -2,7 +2,23 @@
 
 Python code for analyzing my reading habits. See [reading-quantified](https://github.com/drejkim/reading-quantified) for the web app code.
 
-## Setup
+## Setting up the project
+
+This project uses Python 3, which comes with a built-in module (`venv`) to create virtual environments.
+
+Create the virtual environment:
+
+```bash
+python3 -m venv .venv
+```
+
+Install the required packages:
+
+```bash
+.venv/bin/pip install -r requirements.txt
+```
+
+## Creating config.py
 
 Create `config.py` with the following variables:
 
@@ -12,14 +28,8 @@ Create `config.py` with the following variables:
 * PARSE_USERNAME
 * PARSE_PASSWORD
 
-Install the required packages:
+## Usage 
 
 ```bash
-pip install -r requirements.txt
-```
-
-## Usage
-
-```bash
-python books.py
+.venv/bin/python books.py
 ```

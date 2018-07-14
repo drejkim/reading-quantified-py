@@ -87,24 +87,24 @@ def main():
     # Log into Parse
     userData = parse.login()
 
-    print 'Get books in Parse...'
+    print('Get books in Parse...')
     booksInParse = parse.getBooks()['results']
     existingCardIds = [book['cardId'] for book in booksInParse]
-    print 'Done.'
+    print('Done.')
 
-    print 'Get cards from Trello...'
+    print('Get cards from Trello...')
     cards = getCardsInFinishedList()
-    print 'Done.'
+    print('Done.')
 
     for card in cards:
         if card['id'] not in existingCardIds:
             book = createBook(card)
             if book:
-                print 'Uploading to Parse...'
+                print('Uploading to Parse...')
                 r = parse.postBook(book, userData['sessionToken'])
 
                 pprint(book)
-                print r
+                print(r)
 
     now = datetime.datetime.now(dateutil.tz.tzutc())
     cron = {
@@ -115,7 +115,7 @@ def main():
     }
     r = parse.postCron(cron, userData['sessionToken'])
     pprint(cron)
-    print r
+    print(r)
 
 if __name__ == '__main__':
     main()

@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "${workspaceFolder}/.venv/bin/python"
+    "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
+    // Use global pylint
+    "python.linting.pylintPath": "/usr/local/bin/pylint",
 }

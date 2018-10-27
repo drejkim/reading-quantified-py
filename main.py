@@ -1,4 +1,4 @@
-from models.Book import Book
+from models import Book
 
 import firestore
 

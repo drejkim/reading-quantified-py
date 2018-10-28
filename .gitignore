@@ -104,5 +104,4 @@ venv.bak/
 .mypy_cache/
 
 # Secret files that should not be checked in
-config/
-config.py
+secret/

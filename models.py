@@ -1,3 +1,6 @@
+""" Data models
+"""
+
 class Book(object):
     def __init__(self, title, dateStarted, dateFinished):
         self.title = title
